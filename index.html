@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="EduPulse SIMS - Enterprise Student Information Management & Academic Intelligence System for universities, accredited evaluation, and reviewer defense showcase.">
+  <title>EduPulse SIMS | Academic Intelligence & Student Information System</title>
+  
+  <link rel="icon" type="image/jpeg" href="assets/crest.jpg">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/reviewer.css">
+  <link rel="stylesheet" href="css/print.css">
+</head>
+<body>
+  <div id="app-root">
+    <!-- Top Navigation Header -->
+    <header class="app-header">
+      <div class="header-brand" onclick="App.switchView('dashboard')">
+        <img src="assets/crest.jpg" alt="University Crest" class="header-crest" onerror="this.style.display='none'">
+        <div class="brand-text">
+          <h1>EduPulse <span class="brand-badge">SIMS v2.4</span></h1>
+          <p class="brand-subtitle">Aura Institute of Technology & Sciences (Autonomous)</p>
+        </div>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav class="header-nav">
+        <a href="#dashboard" class="nav-link active" data-view="dashboard" id="nav-dashboard">📊 Dashboard</a>
+        <a href="#students" class="nav-link" data-view="students" id="nav-students">🎓 Students Roster</a>
+        <a href="#attendance" class="nav-link" data-view="attendance" id="nav-attendance">🚨 Attendance Center</a>
+        <a href="#courses" class="nav-link" data-view="courses" id="nav-courses">📚 Courses</a>
+        <a href="#fees" class="nav-link" data-view="fees" id="nav-fees">💳 Fee Ledger</a>
+        <a href="#portal" class="nav-link" data-view="student-portal" id="nav-portal">👤 Student Portal</a>
+      </nav>
+
+      <!-- Right Controls & Reviewer Spotlight Button -->
+      <div class="header-actions">
+        <!-- Reviewer Viva Deck Button -->
+        <button class="btn-reviewer-showcase" id="btn-reviewer-deck" title="Open Reviewer Viva & Architecture Kit">
+          <span>🎓</span>
+          <span>Reviewer Viva Deck</span>
+        </button>
+
+        <!-- Role Simulator -->
+        <div class="role-badge-box">
+          <small class="text-dim">Role:</small>
+          <select id="role-selector" class="role-select" title="Switch active role simulation">
+            <option value="admin">Super Admin / Dean</option>
+            <option value="faculty">Faculty Advisor</option>
+            <option value="student">Student Portal</option>
+          </select>
+        </div>
+
+        <!-- Theme Toggle -->
+        <button class="btn-icon" id="btn-theme-toggle" title="Toggle Dark/Light Mode">🌓</button>
+      </div>
+    </header>
+
+    <!-- Main Content App Canvas -->
+    <main class="app-main">
+      
+      <!-- VIEW 1: DASHBOARD -->
+      <section id="view-dashboard" class="view-section active">
+        <!-- KPI Metrics Grid -->
+        <div class="kpi-grid" id="kpi-grid">
+          <div class="kpi-card" style="--card-accent: #3b82f6;">
+            <div>
+              <div class="kpi-title">Enrolled Students</div>
+              <div class="kpi-val mono" id="kpi-total-students">16</div>
+              <div class="kpi-sub"><span class="text-success">↑ 100%</span> Active Profiles</div>
+            </div>
+            <div class="kpi-icon-wrap text-primary">🎓</div>
+          </div>
+
+          <div class="kpi-card" style="--card-accent: #10b981;">
+            <div>
+              <div class="kpi-title">University Avg CGPA</div>
+              <div class="kpi-val mono text-primary" id="kpi-avg-cgpa">8.42</div>
+              <div class="kpi-sub">Scale: 10.0 (UGC CBCS)</div>
+            </div>
+            <div class="kpi-icon-wrap text-success">⭐</div>
+          </div>
+
+          <div class="kpi-card" style="--card-accent: #8b5cf6;">
+            <div>
+              <div class="kpi-title">Avg Attendance Rate</div>
+              <div class="kpi-val mono" id="kpi-avg-attendance">88.5%</div>
+              <div class="kpi-sub"><span class="text-muted">Target: 75% cutoff</span></div>
+            </div>
+            <div class="kpi-icon-wrap" style="color:#8b5cf6;">📋</div>
+          </div>
+
+          <div class="kpi-card" style="--card-accent: #f59e0b;">
+            <div>
+              <div class="kpi-title">Fee Realization</div>
+              <div class="kpi-val mono" id="kpi-fee-rate">88%</div>
+              <div class="kpi-sub">Tuition Collected</div>
+            </div>
+            <div class="kpi-icon-wrap text-warning">💰</div>
+          </div>
+
+          <div class="kpi-card" style="--card-accent: #ef4444;">
+            <div>
+              <div class="kpi-title">At-Risk Students</div>
+              <div class="kpi-val mono text-danger" id="kpi-at-risk">3</div>
+              <div class="kpi-sub"><span class="text-danger">&lt;75% Att. or &lt;5.0 GPA</span></div>
+            </div>
+            <div class="kpi-icon-wrap text-danger">⚠️</div>
+          </div>
+        </div>
+
+        <!-- Visual Analytics Row (Charts) -->
+        <div class="analytics-grid" id="analytics-charts-row">
+          <!-- Donut: Branch Enrollment Breakdown -->
+          <div class="chart-card">
+            <div class="card-header">
+              <h3>Department Enrollment Distribution</h3>
+              <span class="badge">4 Branches</span>
+            </div>
+            <div class="donut-flex-wrapper">
+              <div class="donut-canvas-box">
+                <canvas id="canvas-dept-donut"></canvas>
+              </div>
+              <div class="donut-legend-box" id="donut-legend-container">
+                <!-- Populated via charts.js -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Bar Chart: Grade Distribution -->
+          <div class="chart-card">
+            <div class="card-header">
+              <h3>Grade Distribution (CGPA Tiers)</h3>
+              <span class="badge">Bell Curve</span>
+            </div>
+            <div class="chart-canvas-container">
+              <canvas id="canvas-grade-bars"></canvas>
+            </div>
+          </div>
+
+          <!-- Dean's Honor Roll -->
+          <div class="chart-card">
+            <div class="card-header">
+              <h3>Dean's Honor Roll</h3>
+              <span class="badge badge-deanslist">Top Rankers</span>
+            </div>
+            <div class="top-performers-container" id="top-performers-list">
+              <!-- Populated via app.js -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Audit Activities -->
+        <div class="chart-card">
+          <div class="card-header">
+            <h3>System Activity & Governance Audit Log</h3>
+            <span class="badge">Live Audit Stream</span>
+          </div>
+          <div class="audit-stream" id="audit-log-stream">
+            <!-- Populated via app.js -->
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 2: STUDENTS ROSTER & CRUD -->
+      <section id="view-students" class="view-section">
+        <!-- Toolbar & Filter Bar -->
+        <div class="action-toolbar" id="search-filter-bar">
+          <div class="toolbar-row-top">
+            <div class="search-box-wrap">
+              <span class="search-icon-pos">🔍</span>
+              <input type="text" id="search-students" class="search-input" placeholder="Search by Student Name, Roll No, Email, or Department...">
+              <span class="search-shortcut-badge">Ctrl + K</span>
+            </div>
+
+            <div class="toolbar-controls-right">
+              <!-- View Grid / Table Mode -->
+              <div class="view-toggle-group">
+                <button class="view-toggle-btn active" id="btn-view-grid" title="Grid Card View">⊞ Cards</button>
+                <button class="view-toggle-btn" id="btn-view-table" title="Data Table View">☰ Table</button>
+              </div>
+
+              <!-- Export CSV -->
+              <button class="btn btn-outline btn-sm" id="btn-export-csv" title="Export currently filtered students to CSV">📥 Export CSV</button>
+
+              <!-- Add Student Button (Admin only) -->
+              <button class="btn btn-primary btn-sm" id="btn-add-student" onclick="App.openAddModal()">+ Register Student</button>
+            </div>
+          </div>
+
+          <div class="toolbar-row-bottom">
+            <!-- Department Filter -->
+            <div class="filter-group">
+              <span>Department:</span>
+              <select id="filter-dept" class="select-custom">
+                <option value="ALL">All Departments</option>
+                <option value="CSE">Computer Science (CSE)</option>
+                <option value="AIDS">AI & Data Science (AIDS)</option>
+                <option value="ECE">Electronics (ECE)</option>
+                <option value="MECH">Mechanical (MECH)</option>
+              </select>
+            </div>
+
+            <!-- Semester Filter -->
+            <div class="filter-group">
+              <span>Semester:</span>
+              <select id="filter-sem" class="select-custom">
+                <option value="ALL">All Semesters</option>
+                <option value="3">Semester 3</option>
+                <option value="5">Semester 5</option>
+                <option value="7">Semester 7</option>
+              </select>
+            </div>
+
+            <!-- Academic Standing Filter -->
+            <div class="filter-group">
+              <span>Academic Standing:</span>
+              <select id="filter-standing" class="select-custom">
+                <option value="ALL">All Standings</option>
+                <option value="Dean's List">Dean's List (CGPA ≥ 9.0)</option>
+                <option value="Good Standing">Good Standing</option>
+                <option value="Academic Probation">Academic Probation (&lt; 5.0)</option>
+                <option value="Attendance Warning">Attendance Warning (&lt; 75%)</option>
+              </select>
+            </div>
+
+            <!-- Sort By -->
+            <div class="filter-group">
+              <span>Sort By:</span>
+              <select id="filter-sort" class="select-custom">
+                <option value="cgpa_desc">CGPA: Highest First</option>
+                <option value="cgpa_asc">CGPA: Lowest First</option>
+                <option value="name_asc">Name: A to Z</option>
+                <option value="attendance_desc">Attendance: Highest</option>
+                <option value="attendance_asc">Attendance: Lowest (Risk)</option>
+                <option value="roll_asc">Roll Number</option>
+              </select>
+            </div>
+
+            <div style="margin-left: auto; display: flex; align-items: center; gap: 0.5rem;">
+              <span class="badge" id="student-count-badge">16 Students</span>
+              <!-- Backup JSON controls -->
+              <button class="btn btn-ghost btn-sm" id="btn-export-json" title="Download entire database backup">💾 Backup</button>
+              <label class="btn btn-ghost btn-sm" style="margin:0; cursor:pointer;" title="Restore database from JSON backup">
+                📂 Restore
+                <input type="file" id="file-input-import" accept=".json" style="display:none;">
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Student Cards / Table Container -->
+        <div id="student-roster-container">
+          <!-- Populated dynamically via app.js -->
+        </div>
+      </section>
+
+      <!-- VIEW 3: ATTENDANCE EARLY-WARNING CENTER -->
+      <section id="view-attendance" class="view-section">
+        <div class="compliance-banner alert-danger mb-4" style="margin-bottom: 1.5rem;">
+          <div class="compliance-icon">🚨</div>
+          <div style="flex:1;">
+            <h3>Regulatory Statutory Compliance: AICTE & UGC 75% Attendance Rule</h3>
+            <p>Students recording aggregate attendance below 75% are ineligible for semester end examinations. Review defaulters below and dispatch automated formal warning notifications.</p>
+          </div>
+          <div>
+            <button class="btn btn-warning" onclick="App.dispatchBulkAttendanceWarnings()">📧 Dispatch Bulk Warnings</button>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <div class="card-header">
+            <h3>Defaulter Roster (&lt; 75% Attendance)</h3>
+            <span class="badge badge-overdue" id="att-defaulter-count">3 Students At Risk</span>
+          </div>
+          <div id="attendance-defaulters-list">
+            <!-- Populated via app.js -->
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 4: COURSES CATALOG -->
+      <section id="view-courses" class="view-section">
+        <div class="chart-card mb-4" style="margin-bottom: 1.5rem;">
+          <div class="card-header">
+            <div>
+              <h2>University Academic Course Catalog</h2>
+              <p class="text-muted">Choice Based Credit System (CBCS) Active Course Offerings</p>
+            </div>
+            <span class="badge">Fall Term 2026-27</span>
+          </div>
+        </div>
+
+        <div class="courses-grid" id="courses-catalog-grid">
+          <!-- Populated via app.js -->
+        </div>
+      </section>
+
+      <!-- VIEW 5: FEE & FINANCIAL LEDGER -->
+      <section id="view-fees" class="view-section">
+        <div class="kpi-grid mb-4">
+          <div class="kpi-card" style="--card-accent: #ef4444;">
+            <div>
+              <div class="kpi-title">Total Outstanding Dues</div>
+              <div class="kpi-val mono text-danger" id="fee-total-dues">₹1,03,000</div>
+              <div class="kpi-sub">Across Defaulters</div>
+            </div>
+            <div class="kpi-icon-wrap text-danger">⚠️</div>
+          </div>
+
+          <div class="kpi-card" style="--card-accent: #10b981;">
+            <div>
+              <div class="kpi-title">Paid Profiles</div>
+              <div class="kpi-val mono text-success" id="fee-paid-count">13</div>
+              <div class="kpi-sub">Cleared Accounts</div>
+            </div>
+            <div class="kpi-icon-wrap text-success">✓</div>
+          </div>
+
+          <div class="kpi-card" style="--card-accent: #f59e0b;">
+            <div>
+              <div class="kpi-title">Pending / Overdue</div>
+              <div class="kpi-val mono text-warning" id="fee-pending-count">3</div>
+              <div class="kpi-sub">Action Required</div>
+            </div>
+            <div class="kpi-icon-wrap text-warning">⏳</div>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Roll No</th>
+                <th>Student Name</th>
+                <th>Department</th>
+                <th>Status</th>
+                <th>Balance Due</th>
+                <th class="text-right">Action</th>
+              </tr>
+            </thead>
+            <tbody id="fee-students-table-body">
+              <!-- Populated via app.js -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- VIEW 6: STUDENT SELF-SERVICE PORTAL -->
+      <section id="view-student-portal" class="view-section">
+        <div id="student-portal-content">
+          <!-- Populated dynamically via app.js -->
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ================= MODALS CONTAINER ================= -->
+
+  <!-- 1. Add Student Modal -->
+  <div class="modal-overlay" id="add-student-modal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3>Register New University Student</h3>
+        <button class="modal-close-btn" onclick="App.closeModal('add-student-modal')">&times;</button>
+      </div>
+      <form id="form-add-student">
+        <div class="modal-body">
+          <div class="form-grid-2col">
+            <div class="form-group">
+              <label>Full Name *</label>
+              <input type="text" name="name" class="form-input" placeholder="e.g. Siddharth Nair" required>
+            </div>
+            <div class="form-group">
+              <label>University Roll Number *</label>
+              <input type="text" name="rollNo" class="form-input mono" placeholder="e.g. 2024CSE160" required>
+            </div>
+          </div>
+
+          <div class="form-grid-2col">
+            <div class="form-group">
+              <label>Institutional Email *</label>
+              <input type="email" name="email" class="form-input" placeholder="name@aurainst.edu" required>
+            </div>
+            <div class="form-group">
+              <label>Contact Phone</label>
+              <input type="tel" name="phone" class="form-input" placeholder="+91 98000 00000">
+            </div>
+          </div>
+
+          <div class="form-grid-2col">
+            <div class="form-group">
+              <label>Department / Branch *</label>
+              <select name="department" class="form-input" required>
+                <option value="CSE">Computer Science & Engineering (CSE)</option>
+                <option value="AIDS">AI & Data Science (AIDS)</option>
+                <option value="ECE">Electronics & Communication (ECE)</option>
+                <option value="MECH">Mechanical & Robotics (MECH)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Current Semester *</label>
+              <select name="semester" class="form-input" required>
+                <option value="1">Semester 1</option>
+                <option value="3">Semester 3</option>
+                <option value="5" selected>Semester 5</option>
+                <option value="7">Semester 7</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-grid-2col">
+            <div class="form-group">
+              <label>Initial CGPA (0.00 - 10.00)</label>
+              <input type="number" step="0.01" min="0" max="10" name="cgpa" class="form-input mono" value="8.50" required>
+            </div>
+            <div class="form-group">
+              <label>Attendance Percentage (%)</label>
+              <input type="number" step="0.1" min="0" max="100" name="attendance" class="form-input mono" value="92.0" required>
+            </div>
+          </div>
+
+          <div class="form-grid-2col">
+            <div class="form-group">
+              <label>Fee Status</label>
+              <select name="feeStatus" class="form-input">
+                <option value="Paid">Fully Paid</option>
+                <option value="Partial">Partial</option>
+                <option value="Overdue">Overdue</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Faculty Mentor / Advisor</label>
+              <input type="text" name="mentor" class="form-input" value="Dr. Sarah Jenkins">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Guardian Name & Phone</label>
+            <div class="form-grid-2col">
+              <input type="text" name="guardianName" class="form-input" placeholder="Guardian Name">
+              <input type="text" name="guardianPhone" class="form-input mono" placeholder="+91 Guardian Phone">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="App.closeModal('add-student-modal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save & Register Student</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. Edit Student Modal -->
+  <div class="modal-overlay" id="edit-student-modal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3>Edit Student Profile & Records</h3>
+        <button class="modal-close-btn" onclick="App.closeModal('edit-student-modal')">&times;</button>
+      </div>
+      <form id="form-edit-student">
+        <input type="hidden" name="id" id="edit-student-id">
+        <div class="modal-body">
+          <div class="form-grid-2col">
+            <div class="form-group">
+              <label>Roll Number</label>
+              <input type="text" id="edit-rollNo" name="rollNo" class="form-input mono" readonly style="opacity:0.7;">
+            </div>
+            <div class="form-group">
+              <label>Full Name</label>
+              <input type="text" id="edit-name" name="name" class="form-input" required>
+            </div>
+          </div>
+
+          <div class="form-grid-2col">
+            <div class="form-group">
+              <label>Email Address</label>
+              <input type="email" id="edit-email" name="email" class="form-input" required>
+            </div>
+            <div class="form-group">
+              <label>Phone Number</label>
+              <input type="tel" id="edit-phone" name="phone" class="form-input">
+            </div>
+          </div>
+
+          <div class="form-grid-2col">
+            <div class="form-group">
+              <label>Department</label>
+              <select id="edit-dept" name="department" class="form-input">
+                <option value="CSE">CSE</option>
+                <option value="AIDS">AIDS</option>
+                <option value="ECE">ECE</option>
+                <option value="MECH">MECH</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Semester</label>
+              <select id="edit-semester" name="semester" class="form-input">
+                <option value="1">Sem 1</option>
+                <option value="2">Sem 2</option>
+                <option value="3">Sem 3</option>
+                <option value="4">Sem 4</option>
+                <option value="5">Sem 5</option>
+                <option value="6">Sem 6</option>
+                <option value="7">Sem 7</option>
+                <option value="8">Sem 8</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-grid-2col">
+            <div class="form-group">
+              <label>CGPA</label>
+              <input type="number" step="0.01" min="0" max="10" id="edit-cgpa" name="cgpa" class="form-input mono" required>
+            </div>
+            <div class="form-group">
+              <label>Attendance (%)</label>
+              <input type="number" step="0.1" min="0" max="100" id="edit-attendance" name="attendance" class="form-input mono" required>
+            </div>
+          </div>
+
+          <div class="form-grid-2col">
+            <div class="form-group">
+              <label>Fee Status</label>
+              <select id="edit-feeStatus" name="feeStatus" class="form-input">
+                <option value="Paid">Paid</option>
+                <option value="Partial">Partial</option>
+                <option value="Overdue">Overdue</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Assigned Faculty Mentor</label>
+              <input type="text" id="edit-mentor" name="mentor" class="form-input">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="App.closeModal('edit-student-modal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Update Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 3. Student 360° Profile Large Modal -->
+  <div class="modal-overlay" id="student-profile-modal">
+    <div class="modal-container modal-profile-lg">
+      <div class="modal-header">
+        <h3>Student 360° Comprehensive Academic Profile</h3>
+        <button class="modal-close-btn" onclick="App.closeModal('student-profile-modal')">&times;</button>
+      </div>
+      <div id="profile-modal-content">
+        <!-- Rendered via app.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Official Academic Transcript Modal -->
+  <div class="modal-overlay" id="transcript-modal">
+    <div class="modal-container modal-transcript-xl">
+      <div class="modal-header">
+        <h3>Official Academic Transcript & Grade Report</h3>
+        <div style="display:flex; gap:0.5rem; align-items:center;">
+          <button class="btn btn-primary btn-sm" onclick="window.AcademicDocumentEngine.printElement('printable-transcript')">🖨️ Print / Save PDF</button>
+          <button class="modal-close-btn" onclick="App.closeModal('transcript-modal')">&times;</button>
+        </div>
+      </div>
+      <div class="modal-body" id="transcript-modal-body">
+        <!-- Populated via transcript.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Student ID Badge Modal -->
+  <div class="modal-overlay" id="idcard-modal">
+    <div class="modal-container" style="max-width: 440px;">
+      <div class="modal-header">
+        <h3>Student Identity Pass</h3>
+        <div style="display:flex; gap:0.5rem; align-items:center;">
+          <button class="btn btn-primary btn-sm" onclick="window.AcademicDocumentEngine.printElement('printable-id-card')">🖨️ Print ID</button>
+          <button class="modal-close-btn" onclick="App.closeModal('idcard-modal')">&times;</button>
+        </div>
+      </div>
+      <div class="modal-body" id="idcard-modal-body">
+        <!-- Populated via transcript.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Reviewer Presentation Deck & Viva Kit Modal -->
+  <div class="modal-overlay" id="reviewer-modal">
+    <div class="modal-container modal-reviewer-xl">
+      <div class="reviewer-header">
+        <div class="reviewer-brand">
+          <img src="assets/crest.jpg" alt="Seal" style="width:36px; height:36px; border-radius:50%; object-fit:cover;">
+          <div>
+            <h3>EduPulse Reviewer Presentation & Viva Defense Suite</h3>
+            <small class="text-dim">Project Evaluation & Architecture Inspection Kit</small>
+          </div>
+        </div>
+        <div style="display:flex; align-items:center; gap:0.75rem;">
+          <button class="btn btn-sm btn-primary" onclick="ReviewerKit.startTour()">🚀 Launch 1-Click Guided Demo Tour</button>
+          <button class="modal-close-btn" id="close-reviewer-modal">&times;</button>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs inside Reviewer Deck -->
+      <div class="reviewer-nav-bar">
+        <button class="reviewer-nav-tab active" data-tab="overview" onclick="ReviewerKit.setTab('overview')">📌 Executive Overview</button>
+        <button class="reviewer-nav-tab" data-tab="architecture" onclick="ReviewerKit.setTab('architecture')">🏛️ System Architecture</button>
+        <button class="reviewer-nav-tab" data-tab="erd" onclick="ReviewerKit.setTab('erd')">🗄️ Relational Schema & ERD</button>
+        <button class="reviewer-nav-tab" data-tab="rubric" onclick="ReviewerKit.setTab('rubric')">📋 Evaluator Rubric Matrix</button>
+        <button class="reviewer-nav-tab" data-tab="viva" onclick="ReviewerKit.setTab('viva')">🎙️ Viva Voce Defense Q&A</button>
+        <button class="reviewer-nav-tab" data-tab="presets" onclick="ReviewerKit.setTab('presets')">🧪 Reviewer Data Presets</button>
+      </div>
+
+      <!-- Content Area of Reviewer Deck -->
+      <div class="reviewer-body-scroll" id="reviewer-tab-content">
+        <!-- Rendered via reviewer.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/transcript.js"></script>
+  <script src="js/reviewer.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

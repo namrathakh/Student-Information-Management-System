@@ -1,0 +1,405 @@
+/**
+ * EduPulse SIMS - Print & Document Formatting Stylesheet
+ * Official NAAC/AICTE Grade Sheet & Student Identity Card
+ */
+
+/* Screen styles for Transcript Modal */
+.modal-transcript-xl {
+  max-width: 900px;
+}
+
+.transcript-paper {
+  background: #ffffff;
+  color: #1e293b;
+  padding: 2.2rem;
+  border-radius: 4px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  font-family: 'Inter', serif;
+}
+
+.transcript-header {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  border-bottom: 2px solid #0f172a;
+  padding-bottom: 1.2rem;
+  margin-bottom: 1.2rem;
+}
+
+.transcript-logo .seal-img {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #d97706;
+}
+
+.transcript-univ-info {
+  flex: 1;
+}
+
+.univ-name {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.15rem;
+}
+
+.univ-sub {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #475569;
+  margin-bottom: 0.15rem;
+}
+
+.univ-address {
+  font-size: 0.7rem;
+  color: #64748b;
+  margin-bottom: 0.5rem;
+}
+
+.transcript-title-band {
+  display: inline-block;
+  background: #0f172a;
+  color: #ffffff;
+  padding: 3px 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  border-radius: 2px;
+}
+
+.transcript-doc-meta {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.35rem;
+}
+
+.qr-box {
+  border: 1px dashed #cbd5e1;
+  padding: 4px;
+  text-align: center;
+}
+
+.qr-mock {
+  width: 48px;
+  height: 48px;
+  background: 
+    repeating-linear-gradient(0deg, #0f172a 0, #0f172a 4px, transparent 4px, transparent 8px),
+    repeating-linear-gradient(90deg, #0f172a 0, #0f172a 4px, #ffffff 4px, #ffffff 8px);
+}
+
+.doc-serial {
+  font-size: 0.65rem;
+  color: #64748b;
+}
+
+.transcript-student-meta {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 0.85rem 1.15rem;
+  border-radius: 4px;
+  margin-bottom: 1.25rem;
+}
+
+.meta-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.35rem;
+  font-size: 0.8rem;
+}
+
+.meta-row:last-child {
+  margin-bottom: 0;
+}
+
+.meta-lbl {
+  color: #64748b;
+}
+
+.meta-val {
+  color: #0f172a;
+}
+
+.transcript-table-wrapper {
+  margin-bottom: 1.25rem;
+}
+
+.transcript-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+
+.transcript-table th {
+  background: #f1f5f9;
+  color: #0f172a;
+  font-weight: 700;
+  border: 1px solid #cbd5e1;
+  padding: 0.5rem;
+}
+
+.transcript-table td {
+  border: 1px solid #cbd5e1;
+  padding: 0.5rem;
+  color: #1e293b;
+}
+
+.transcript-summary-box {
+  display: flex;
+  justify-content: space-between;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  padding: 0.85rem 1.25rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+.summary-metric .lbl {
+  display: block;
+  font-size: 0.7rem;
+  color: #64748b;
+  text-transform: uppercase;
+}
+
+.summary-metric .val {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.summary-metric.highlight .val {
+  color: #2563eb;
+}
+
+.standing-badge {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #059669;
+}
+
+.grading-scale-legend {
+  font-size: 0.7rem;
+  color: #64748b;
+  border-top: 1px dashed #cbd5e1;
+  padding-top: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.transcript-signatures {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-top: 1.5rem;
+}
+
+.sig-block {
+  text-align: center;
+  width: 180px;
+}
+
+.sig-line {
+  border-bottom: 1px solid #0f172a;
+  margin-bottom: 0.35rem;
+  height: 24px;
+}
+
+.sig-line.cursive {
+  font-family: 'Brush Script MT', cursive, sans-serif;
+  font-size: 1.3rem;
+  color: #1e3a8a;
+  border-bottom: 1px solid #0f172a;
+}
+
+.sig-name {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.sig-role {
+  font-size: 0.68rem;
+  color: #64748b;
+}
+
+.sig-stamp {
+  width: 90px;
+  height: 90px;
+  border: 2px dashed #dc2626;
+  border-radius: 50%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #dc2626;
+  font-size: 0.65rem;
+  transform: rotate(-12deg);
+}
+
+/* ID Card Styles */
+.id-card-display {
+  display: flex;
+  justify-content: center;
+  padding: 1.5rem 0;
+}
+
+.id-card {
+  width: 320px;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  color: #ffffff;
+  border-radius: 14px;
+  border: 2px solid rgba(245, 158, 11, 0.5);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  overflow: hidden;
+  position: relative;
+}
+
+.id-header {
+  background: rgba(0, 0, 0, 0.4);
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.id-crest {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.id-inst-name span {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.id-inst-name small {
+  font-size: 0.65rem;
+  color: var(--accent-gold);
+  letter-spacing: 0.08em;
+}
+
+.id-body {
+  padding: 1.25rem 1rem;
+  text-align: center;
+}
+
+.id-photo-frame {
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+  margin: 0 auto 0.75rem auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 800;
+  border: 3px solid #ffffff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+.id-student-name {
+  font-size: 1.15rem;
+  margin-bottom: 0.2rem;
+}
+
+.id-roll-badge {
+  display: inline-block;
+  background: rgba(59, 130, 246, 0.2);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.id-info-grid {
+  text-align: left;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  padding: 0.65rem 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.id-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+}
+
+.id-row .k { color: #94a3b8; }
+.id-row .v { font-weight: 600; color: #f8fafc; }
+
+.id-footer {
+  background: rgba(0, 0, 0, 0.4);
+  padding: 0.65rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.barcode-mock {
+  width: 100px;
+  height: 22px;
+  background: repeating-linear-gradient(90deg, #fff 0, #fff 2px, transparent 2px, transparent 4px, #fff 4px, #fff 7px, transparent 7px, transparent 8px);
+}
+
+.validity {
+  font-size: 0.65rem;
+  color: #cbd5e1;
+  font-family: var(--font-mono);
+}
+
+/* Print Media Query */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  .modal-overlay.active,
+  #printable-transcript,
+  #printable-transcript *,
+  #printable-id-card,
+  #printable-id-card * {
+    visibility: visible;
+  }
+
+  .modal-overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: #ffffff !important;
+    padding: 0;
+    display: block;
+    backdrop-filter: none;
+  }
+
+  .modal-container {
+    border: none;
+    box-shadow: none;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  .modal-header, .modal-footer, .app-header, .action-toolbar {
+    display: none !important;
+  }
+
+  .transcript-paper {
+    padding: 0;
+    box-shadow: none;
+  }
+}
